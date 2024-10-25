@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fontsource/fira-code": "^5.1.0",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
@@ -26,6 +27,7 @@
     "path": "^0.12.7",
     "redis": "^4.7.0",
     "save": "^2.9.0",
+    "uuid": "^10.0.0",
     "validator": "^13.12.0"
   }
 }

@@ -1,11 +1,8 @@
 const express = require('express')
 const router = express.Router();
 const auth = require('../Middelware/auth');
-const {getalluser} = require("../Controller/userController")
-const {getalldoctor} = require("../Controller/doctorController")
+const { getallAppointmentbyID } = require('../Controller/doctorController');
 
-
-
-router.get('/getalldoctor',getalldoctor);
+router.get('/getallAppointmentbyID/:userId', getallAppointmentbyID);
 
 module.exports = router;

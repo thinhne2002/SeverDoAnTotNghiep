@@ -1,17 +1,44 @@
+const Appointment = require("../Model/Appointment");
 const Doctor = require("../Model/Doctor");
-const getalldoctor = async (req, res) => {
+
+const getallAppointmentbyID = async (req, res) => {
     try {
-        const alldoctor = await Doctor.find();
-        if (alldoctor.length === 0) {
-            console.log("No Doctors found");
-        } else {
-            console.log("All Doctors:", alldoctor);
+        const userId = req.params.userId;
+        console.log('userId:', userId); // Log để kiểm tra giá trị userId
+        const appointments = await Appointment.find({ doctorId: userId });
+
+        if (!appointments) {
+            return res.status(404).json({ message: "Không tìm thấy lịch hẹn" });
         }
-        res.status(200).json(alldoctor);
+        res.status(200).json(appointments);
     } catch (error) {
-        console.log("Error fetching Doctors:", error.message);
+        console.log('Lỗi tìm lịch hẹn', error);
         res.status(500).json({ message: error.message });
     }
-}
+};
+const accepAppointment = async (req, res) => {
+    try {
+        const { pantient, doctor } = req.body;
+        console.log(pantient, doctor); // Log để kiểm tra giá trị userId
 
-module.exports = {getalldoctor};
+        // Tìm lịch hẹn với doctorId và pantientId
+        const appointments = await Appointment.findOne({ doctorId: doctor, pantientId: pantient });
+
+        if (!appointments) {
+            return res.status(404).json({ message: "Không tìm thấy lịch hẹn" });
+        }
+
+        // Cập nhật trạng thái thành "Confirmed"
+        appointments.status = "Confirmed";
+
+        // Lưu cập nhật vào database
+        await appointments.save();
+
+        // Trả về kết quả thành công
+        res.status(200).json(appointments);
+    } catch (error) {
+        console.log('Lỗi tìm lịch hẹn', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+module.exports = { getallAppointmentbyID };
