@@ -4,8 +4,6 @@ const appointment = new mongoose.Schema({
   _id: {
     type: String,
     default: uuidv4,
-    required: true,
-    unique: true
 },
   patientId: { type: String, ref: 'User', required: true }, // Tham chiếu đến bệnh nhân
   doctorId: { type: String, ref: 'User', required: true },   // Tham chiếu đến bác sĩ

@@ -5,8 +5,7 @@ const doctor = new mongoose.Schema({
   _id: {
     type: String,
     default: uuidv4,
-    required: true,
-    unique: true
+
   },
   account: { type: String, ref: 'User' },
   specialization: { type: String, ref: 'Specialization' },// Chuyên môn

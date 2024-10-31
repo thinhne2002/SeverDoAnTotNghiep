@@ -259,8 +259,9 @@ const loginUser = async (req, res) => {
             ],
         });
         if (!user) {
-            return res.status(400).json({ error: "Thông tin đăng nhập không hợp lệ." });
+            return res.status(400).json({ error: "Thông tin đăng nhập không hợp lệ.", account, password });
         }
+
         // So sánh mật khẩu nhập vào với mật khẩu đã mã hóa
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {

@@ -5,8 +5,7 @@ const patient = new mongoose.Schema({
   _id: {
     type: String,
     default: uuidv4,
-    required: true,
-    unique: true
+
   },
   account: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   name: { type: String, required: true },               // Tên bệnh nhân

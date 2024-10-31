@@ -6,8 +6,6 @@ const userSchema = new Schema({
     _id: {
         type: String,
         default: uuidv4,
-        required: true,
-        unique: true
     },
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true, trim: true },

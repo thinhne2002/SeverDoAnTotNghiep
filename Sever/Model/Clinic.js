@@ -4,8 +4,7 @@ const clinic = new mongoose.Schema({
   _id: {
     type: String,
     default: uuidv4,
-    required: true,
-    unique: true
+
 },
     name: { type: String, required: true }, // Tham chiếu đến bệnh nhân
     doctorId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }],
