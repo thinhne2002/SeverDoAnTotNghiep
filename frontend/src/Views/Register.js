@@ -1,91 +1,136 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { message } from "antd";
+import axios from "axios";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-    const navigate = useNavigate();
-    const [isFocused, setIsFocused] = useState(false);
-    const [passwordShown, setPasswordShown] = useState(false);
-    const [birthday, setBirthday] = useState('');
-    const [userName, setUserName] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState(''); // State for the confirm password
-    const [fullname, setFullName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [error, setError] = useState('');
+    const nav = useNavigate();
+    const [user, setUser] = useState('');
+    const [pass, setPass] = useState('');
+    // Mày Chỉ Cần Sửa Cái Hàm Này Lại Là Được
+    const handlelogin = async () => {
+        try {
+            const res = await axios.post("http://localhost:5000/api/user/loginUser", {
+                account: user,
+                password: pass
+            });
 
-    const togglePasswordVisibility = () => setPasswordShown(!passwordShown);
+            console.log('Response:', res.data); // In ra phản hồi từ máy chủ
 
-    const handleSubmit = async (e) => {
-        // e.preventDefault();
-        // setError('');
-
-        // if (password !== confirmPassword) {
-        //     setError("Passwords do not match."); // Set error if passwords don't match
-        //     return; // Prevent form submission
-        // }
-
-        // const userData = { userName, password, fullname, email, phoneNumber, birthday };
-
-        // try {
-        //     const response = await axios.post(register, userData);
-        //     console.log('Registration successful:', response.data);
-        //     navigate('/verify', { state: { email: email } });
-        // } catch (error) {
-        //     setError(error.response?.data.error || "An unexpected error occurred."); // Set error message from response
-        // }
+            // Kiểm tra nếu đăng nhập thành công
+            if (res.status === 200) {
+                message.success('Login Success');
+                nav('/');
+            } else {
+                message.error('Login failed');
+            }
+        } catch (error) {
+            console.log('Error caught:', error);
+            if (error.response) {
+                console.log('Response data:', error.response.data);
+                message.error(`Login failed: ${error.response.data.message || 'Unknown error'}`);
+            } else {
+                message.error('Login failed');
+            }
+        }
     };
+    const handleRegister = async () => {
+
+    }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-200 to-blue-400 flex justify-center items-center">
-            <div className={`bg-white rounded-lg shadow-lg p-8 w-full max-w-md transition-transform ${isFocused ? 'transform scale-105' : ''}`}>
-                <form onSubmit={handleSubmit}>
-                    <h1 className="text-4xl font-bold text-center text-teal-600 mb-8">Đăng ký tài khoản</h1>
-                    {error && <p className="text-red-500 text-center">{error}</p>}
-                    {/* Loop through input fields */}
-                    {[
-                        { label: 'Tài khoản', type: 'text', value: userName, setValue: setUserName },
-                        { label: 'Họ tên', type: 'text', value: fullname, setValue: setFullName },
-                        { label: 'Email', type: 'email', value: email, setValue: setEmail },
-                        { label: 'Số điện thoại', type: 'tel', value: phoneNumber, setValue: setPhoneNumber },
-                        { label: 'Ngày sinh', type: 'date', value: birthday, setValue: setBirthday, id: 'birthday' },
-                        { label: 'Mật khẩu', type: passwordShown ? 'text' : 'password', value: password, setValue: setPassword, isPassword: true },
-                        { label: 'Nhập lại mật khẩu', type: passwordShown ? 'text' : 'password', value: confirmPassword, setValue: setConfirmPassword, isPassword: true },
-                    ].map((input, index) => (
-                        <div key={index} className="mt-6">
-                            <label className="block text-gray-700">{input.label}</label>
-                            <div className="relative">
-                                <input
-                                    id={input.id}
-                                    value={input.value}
-                                    onChange={(e) => input.setValue(e.target.value)}
-                                    required
-                                    onFocus={() => setIsFocused(true)}
-                                    onBlur={() => setIsFocused(false)}
-                                    className="w-full border-b-2 border-gray-300 focus:border-teal-500 outline-none py-2"
-                                    type={input.type}
-                                />
-                                {input.isPassword && (
-                                    <FontAwesomeIcon
-                                        icon={passwordShown ? FaEyeSlash : FaEye}
-                                        onClick={togglePasswordVisibility}
-                                        className="absolute right-3 top-2 text-teal-500 cursor-pointer"
-                                    />
-                                )}
+        <div className="min-h-screen flex items-center justify-center">
+            <div className="absolute inset-0 z-0">
+                <img src="https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8yNV9zaW1wbGVfM2RfaWxsdXN0cmF0aW9uX29mX2FfcmVjb3Zlcnlfcm9vbV93aV80ZjhkNDIwNC02N2I4LTQwMDQtYTBlNy05YjljMjIyMzE2ZGVfMS5qcGc.jpg" alt=""
+                    className="w-full h-full object-cover filter blur-sm brightness-30" />
+            </div>
+            <div className="relative bg-white flex flex-col justify-center w-[30%] py-3 sm:px-6 lg:px-8">
+                <div className="sm:mx-auto sm:w-full sm:max-w-md">
+                    <h2 className="mt-3 text-center text-3xl font-extrabold text-gray-900">
+                        Sign up
+                    </h2>
+                    <p className="mt-2 text-center text-sm text-gray-600 max-w">
+                        Or if you have account <span onClick={() => { nav('/login') }} className="cursor-pointer font-medium text-blue-600 hover:text-blue-500">
+                            Login
+                        </span>
+                    </p>
+                </div>
+
+                <div className="mt-3 sm:mx-auto sm:w-full sm:max-w-md">
+                    <div className="bg-gray-100 py-8 px-4 shadow sm:rounded-lg sm:px-10">
+                        <div className="space-y-4">
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                    UserName
+                                </label>
+                                <div className="mt-1">
+                                    <input value={user} onChange={(a) => setUser(a.target.value)} id="account" name="account" type="text" autoComplete="account" required
+                                        className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                        placeholder="Enter your email address" />
+                                </div>
                             </div>
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                    Email
+                                </label>
+                                <div className="mt-1">
+                                    <input value={user} onChange={(a) => setUser(a.target.value)} id="account" name="account" type="text" autoComplete="account" required
+                                        className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                        placeholder="Enter your email address" />
+                                </div>
+                            </div>
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                    UserName, Email or Phone
+                                </label>
+                                <div className="mt-1">
+                                    <input value={user} onChange={(a) => setUser(a.target.value)} id="account" name="account" type="text" autoComplete="account" required
+                                        className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                        placeholder="Enter your email address" />
+                                </div>
+                            </div>
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                    UserName, Email or Phone
+                                </label>
+                                <div className="mt-1">
+                                    <input value={user} onChange={(a) => setUser(a.target.value)} id="account" name="account" type="text" autoComplete="account" required
+                                        className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                        placeholder="Enter your email address" />
+                                </div>
+                            </div>
+                            <div>
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                    Password
+                                </label>
+                                <div className="mt-1">
+                                    <input value={pass} onChange={(b) => setPass(b.target.value)} id="password" name="password" type="password" autoComplete="current-password" required
+                                        className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                        placeholder="Enter your password" />
+                                </div>
+                            </div>
+                            <div>
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                    Confirm Password
+                                </label>
+                                <div className="mt-1">
+                                    <input value={pass} onChange={(b) => setPass(b.target.value)} id="password" name="password" type="password" autoComplete="current-password" required
+                                        className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                        placeholder="Confirm Password" />
+                                </div>
+                            </div>
+                            <button onClick={handleRegister}
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Sign Up
+                            </button>
                         </div>
-                    ))}
-                    <div className="mt-10 flex justify-center">
-                        <button className="bg-teal-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-teal-700 transition duration-300 w-full">
-                            Tạo tài khoản
-                        </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );
-};
+}
 
 export default Register;

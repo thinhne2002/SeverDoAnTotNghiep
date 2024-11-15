@@ -10,8 +10,8 @@ function Login() {
     // Mày Chỉ Cần Sửa Cái Hàm Này Lại Là Được
     const handlelogin = async () => {
         try {
-            const res = await axios.post("http://localhost:5000/api/user/loginUser", {
-                account: user,
+            const res = await axios.post("http://localhost:8081/api/login", {
+                email: user,
                 password: pass
             });
 
@@ -36,27 +36,26 @@ function Login() {
     };
 
     return (
-        <div className="bg-gray-100 min-h-screen flex items-center justify-center">
+        <div className="min-h-screen flex items-center justify-center">
             <div className="absolute inset-0 z-0">
-                <img src="https://picsum.photos//1080" alt=""
-                    className="w-full h-full object-cover filter blur-lg brightness-50" />
+                <img src="https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8yNV9zaW1wbGVfM2RfaWxsdXN0cmF0aW9uX29mX2FfcmVjb3Zlcnlfcm9vbV93aV80ZjhkNDIwNC02N2I4LTQwMDQtYTBlNy05YjljMjIyMzE2ZGVfMS5qcGc.jpg" alt=""
+                    className="w-full h-full object-cover filter blur-sm brightness-30" />
             </div>
 
-            <div className="relative bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+            <div className="relative bg-white flex flex-col justify-center py-12 sm:px-6 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-md">
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
                         Sign in to your account
                     </h2>
                     <p className="mt-2 text-center text-sm text-gray-600 max-w">
-                        Or
-                        <a onClick={() => { nav('/register') }} className="font-medium text-blue-600 hover:text-blue-500">
+                        Or <span onClick={() => { nav('/register') }} className="cursor-pointer font-medium text-blue-600 hover:text-blue-500">
                             create an account
-                        </a>
+                        </span>
                     </p>
                 </div>
 
                 <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                    <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+                    <div className="bg-gray-100 py-8 px-4 shadow sm:rounded-lg sm:px-10">
                         <div className="space-y-6">
                             <div>
                                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -90,9 +89,9 @@ function Login() {
                                 </div>
 
                                 <div className="text-sm">
-                                    <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+                                    <span onClick={() => { nav('/forgotpassword') }} className="font-medium cursor-pointer text-blue-600 hover:text-blue-500">
                                         Forgot your password?
-                                    </a>
+                                    </span>
                                 </div>
                             </div>
 
